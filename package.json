@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/jakesidsmith/react-shallow-renderer#readme",
   "dependencies": {
+    "@types/react": ">=16",
     "react": ">=16"
   },
   "devDependencies": {
