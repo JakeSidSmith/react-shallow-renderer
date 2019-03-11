@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "pretty": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "moduleResolution": "node",
+    "jsx": "react",
+    "target": "es6",
+    "module": "es6",
+    "typeRoots": [
+      "./node_modules/@types/",
+      "./@types/"
+    ]
+  },
+  "exclude": [
+    "./dist/",
+    "./build",
+    "./coverage"
+  ]
+}

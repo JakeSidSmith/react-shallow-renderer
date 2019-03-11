@@ -1,0 +1,39 @@
+{
+  "extends": [
+    "tslint:recommended",
+    "tslint-eslint-rules",
+    "tslint-react",
+    "tslint-config-prettier"
+  ],
+  "rules": {
+    "variable-name": [true, "allow-leading-underscore", "ban-keywords"],
+    "strict-type-predicates": true,
+
+    "object-literal-sort-keys": false,
+    "interface-name": false,
+
+    "triple-equals": true,
+    "no-constant-condition": true,
+    "no-console": true,
+    "no-debugger": true,
+    "no-extra-boolean-cast": true,
+    "no-eval": true,
+    "no-shadowed-variable": true,
+
+    "radix": true,
+    "curly": true,
+    "no-switch-case-fall-through": true,
+    "switch-default": true,
+
+    "no-var-keyword": true,
+    "no-unused-expression": true,
+    "no-use-before-declare": true,
+
+    "jsx-boolean-value": [true, "never"],
+    "jsx-key": true,
+    "jsx-no-string-ref": true,
+    "jsx-self-close": true,
+    "jsx-no-bind": true,
+    "jsx-no-lambda": true
+  }
+}
