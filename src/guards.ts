@@ -13,6 +13,7 @@ import {
   ReactConsumerNode,
   ReactFragmentNode,
   ReactFunctionNode,
+  ReactHTMLNode,
   ReactMemoNode,
   ReactPortalNode,
   ReactProviderNode,
@@ -20,6 +21,10 @@ import {
 
 export function isFragment(node: ReactAnyNode): node is ReactFragmentNode {
   return node.$$typeof === elementSymbol && node.type === fragmentSymbol;
+}
+
+export function isHTML(node: ReactAnyNode): node is ReactHTMLNode {
+  return node.$$typeof === elementSymbol && typeof node.type === 'string';
 }
 
 export function isClass(node: ReactAnyNode): node is ReactClassNode {
