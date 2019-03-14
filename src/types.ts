@@ -35,7 +35,10 @@ export interface ReactAnyNode {
     | ConsumerType;
   key: null | string;
   ref: null | string | React.Ref<unknown>;
-  props: Record<string, unknown>;
+  props: {
+    [i: string]: unknown;
+    children?: ReadonlyArray<ReactAnyNode | string | number | null | boolean>;
+  };
 }
 
 export interface ReactHTMLNode extends ReactAnyNode {
