@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { elementSymbol } from './constants';
-import { isFunction, isHTML } from './guards';
+import { isFunction, isHTML, isMemo } from './guards';
 import {
   ReactAnyChild,
   ReactAnyChildren,
@@ -17,8 +17,10 @@ export class ReactShallowRenderer {
   }
 
   public toJSON(): ReactResolvedChildren {
-    const node = this.element;
+    return this.internalToJSON(this.element);
+  }
 
+  private internalToJSON(node: ReactAnyNode): ReactResolvedChildren {
     if (isHTML(node)) {
       return {
         ...node,
@@ -37,6 +39,18 @@ export class ReactShallowRenderer {
       }
 
       return children;
+    }
+
+    if (isMemo(node)) {
+      return this.internalToJSON({
+        ...node.type,
+        $$typeof: elementSymbol,
+        key: null,
+        ref: null,
+        props: node.props,
+        _owner: null,
+        _store: {},
+      });
     }
 
     return {
