@@ -45,6 +45,8 @@ export interface ReactAnyNode {
     [i: string]: unknown;
     children?: ReadonlyArray<ReactAnyChild> | ReactAnyChild;
   };
+  _owner: unknown;
+  _store: unknown;
 }
 
 export interface ReactHTMLNode extends ReactAnyNode {
@@ -61,6 +63,8 @@ export interface ReactResolvedNode extends ReactAnyNode {
     [i: string]: unknown;
     children: ReadonlyArray<ReactResolvedChild>;
   };
+  _owner: any;
+  _store: any;
 }
 
 export interface ReactFragmentNode extends ReactAnyNode {
