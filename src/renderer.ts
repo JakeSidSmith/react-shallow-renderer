@@ -74,6 +74,10 @@ export class ReactShallowRenderer {
   }
 
   private resolveName(node: ReactAnyNode): string {
+    if (isHTML(node)) {
+      return node.type;
+    }
+
     return node ? 'MyComponent' : 'NotMyComponent';
   }
 }
