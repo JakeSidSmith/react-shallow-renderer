@@ -12,6 +12,11 @@ function compare(
 }
 
 describe('ReactShallowRenderer', () => {
+  const ComponentReturnsArray = ((() => [
+    <p key={1}>First</p>,
+    'Second',
+  ]) as unknown) as React.FunctionComponent; // Casting because this shouldn't really be possible
+
   const UnknownMemoComponent: React.FunctionComponent = React.memo(() => (
     <p>Unknown name</p>
   ));
@@ -201,5 +206,26 @@ describe('ReactShallowRenderer', () => {
       _owner: null,
       _store: {},
     });
+  });
+
+  it('renders a component that returns an array', () => {
+    const element = <ComponentReturnsArray />;
+
+    const renderer = new ReactShallowRenderer(element);
+
+    compare(renderer.toJSON(), [
+      {
+        $$typeof: elementSymbol,
+        type: 'p',
+        key: '1',
+        ref: null,
+        props: {
+          children: ['First'],
+        },
+        _owner: null,
+        _store: {},
+      },
+      'Second',
+    ]);
   });
 });
