@@ -48,17 +48,7 @@ export class ReactShallowRenderer {
       });
     }
 
-    return {
-      $$typeof: elementSymbol,
-      type: 'SomethingWentWrongWithTheNode',
-      ref: null,
-      key: null,
-      props: {
-        children: [],
-      },
-      _owner: null,
-      _store: {},
-    };
+    throw new Error('Invalid React element / child');
   }
 
   private resolveChildren(
@@ -90,7 +80,7 @@ export class ReactShallowRenderer {
       });
     }
 
-    return [];
+    throw new Error('Invalid React element / child');
   }
 
   private resolveChild(node: ReactAnyChild): ReactResolvedChild {
@@ -129,6 +119,6 @@ export class ReactShallowRenderer {
       })})`;
     }
 
-    return 'SomethingWentWrongWithTheName';
+    throw new Error('Invalid React element / child');
   }
 }
