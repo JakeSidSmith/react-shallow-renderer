@@ -67,8 +67,8 @@ export interface ReactResolvedNode extends ReactAnyNode {
     [i: string]: unknown;
     children: ReadonlyArray<ReactResolvedChild>;
   };
-  _owner: any;
-  _store: any;
+  _owner: unknown;
+  _store: unknown;
 }
 
 export interface ReactFragmentNode extends ReactAnyNode {
