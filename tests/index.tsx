@@ -64,6 +64,28 @@ describe('ReactShallowRenderer', () => {
     )
   );
 
+  class ComponentClass extends React.Component {
+    public render() {
+      return <p>Component class child</p>;
+    }
+  }
+
+  // tslint:disable-next-line:max-classes-per-file
+  class ComponentClassWithDisplayName extends React.Component {
+    public static displayName = 'DisplayName';
+
+    public render() {
+      return <p>Component class (with display name) child</p>;
+    }
+  }
+
+  const ComponentWithClassChildren: React.FunctionComponent = () => (
+    <div>
+      <ComponentClass />
+      <ComponentClassWithDisplayName />
+    </div>
+  );
+
   describe('internalToJSON', () => {
     it('throws an error if the node is invalid', () => {
       const renderer = new ReactShallowRenderer(<div />);
@@ -303,6 +325,83 @@ describe('ReactShallowRenderer', () => {
             ref: null,
             props: {
               children: [false],
+            },
+            _owner: null,
+            _store: {},
+          },
+        ],
+      },
+      _owner: null,
+      _store: {},
+    });
+  });
+
+  it('renders a component class', () => {
+    const element = <ComponentClass />;
+
+    const renderer = new ReactShallowRenderer(element);
+
+    compare(renderer.toJSON(), {
+      $$typeof: elementSymbol,
+      type: 'p',
+      key: null,
+      ref: null,
+      props: {
+        children: ['Component class child'],
+      },
+      _owner: null,
+      _store: {},
+    });
+  });
+
+  it('renders a component class with a display name', () => {
+    const element = <ComponentClassWithDisplayName />;
+
+    const renderer = new ReactShallowRenderer(element);
+
+    compare(renderer.toJSON(), {
+      $$typeof: elementSymbol,
+      type: 'p',
+      key: null,
+      ref: null,
+      props: {
+        children: ['Component class (with display name) child'],
+      },
+      _owner: null,
+      _store: {},
+    });
+  });
+
+  it('renders a component with component class children', () => {
+    const element = <ComponentWithClassChildren />;
+
+    const renderer = new ReactShallowRenderer(element);
+
+    compare(renderer.toJSON(), {
+      $$typeof: elementSymbol,
+      type: 'div',
+      key: null,
+      ref: null,
+      props: {
+        children: [
+          {
+            $$typeof: elementSymbol,
+            type: 'ComponentClass',
+            key: null,
+            ref: null,
+            props: {
+              children: [],
+            },
+            _owner: null,
+            _store: {},
+          },
+          {
+            $$typeof: elementSymbol,
+            type: 'DisplayName',
+            key: null,
+            ref: null,
+            props: {
+              children: [],
             },
             _owner: null,
             _store: {},
