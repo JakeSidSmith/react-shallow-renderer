@@ -1,6 +1,10 @@
 import * as React from 'react';
-import { ReactShallowRenderer } from '../src';
+import { ReactResolvedNode, ReactShallowRenderer } from '../src';
 import { elementSymbol } from '../src/constants';
+
+function compare(output: ReactResolvedNode, expected: ReactResolvedNode) {
+  expect(JSON.stringify(output, undefined, 2)).toBe(JSON.stringify(expected, undefined, 2));
+}
 
 describe('ReactShallowRenderer', () => {
   const ComponentWithChildren: React.FunctionComponent = ({ children }) => (
@@ -19,7 +23,7 @@ describe('ReactShallowRenderer', () => {
 
     const renderer = new ReactShallowRenderer(element);
 
-    expect(JSON.stringify(renderer.toJSON(), undefined, 2)).toEqual(JSON.stringify({
+    compare(renderer.toJSON(), {
       $$typeof: elementSymbol,
       type: 'div',
       key: null,
@@ -42,7 +46,7 @@ describe('ReactShallowRenderer', () => {
       },
       _owner: null,
       _store: {}
-    }, undefined, 2));
+    });
   });
 
   it('renders a basic function component with own and supplied children', () => {
