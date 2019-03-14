@@ -79,10 +79,25 @@ describe('ReactShallowRenderer', () => {
     }
   }
 
+  // tslint:disable-next-line:max-classes-per-file
+  class ComponentClassWithSuppliedChildren extends React.Component {
+    public render() {
+      return <p>{this.props.children}</p>;
+    }
+  }
+
   const ComponentWithClassChildren: React.FunctionComponent = () => (
     <div>
       <ComponentClass />
       <ComponentClassWithDisplayName />
+    </div>
+  );
+
+  const ComponentWithComponentClassSuppliedChildren: React.FunctionComponent = () => (
+    <div>
+      <ComponentClassWithSuppliedChildren>
+        I am a child!
+      </ComponentClassWithSuppliedChildren>
     </div>
   );
 
@@ -402,6 +417,58 @@ describe('ReactShallowRenderer', () => {
             ref: null,
             props: {
               children: [],
+            },
+            _owner: null,
+            _store: {},
+          },
+        ],
+      },
+      _owner: null,
+      _store: {},
+    });
+  });
+
+  it('renders a component class with supplied children', () => {
+    const element = (
+      <ComponentClassWithSuppliedChildren>
+        I am a child!
+      </ComponentClassWithSuppliedChildren>
+    );
+
+    const renderer = new ReactShallowRenderer(element);
+
+    compare(renderer.toJSON(), {
+      $$typeof: elementSymbol,
+      type: 'p',
+      key: null,
+      ref: null,
+      props: {
+        children: ['I am a child!'],
+      },
+      _owner: null,
+      _store: {},
+    });
+  });
+
+  it('renders a component with a component class child with supplied children', () => {
+    const element = <ComponentWithComponentClassSuppliedChildren />;
+
+    const renderer = new ReactShallowRenderer(element);
+
+    compare(renderer.toJSON(), {
+      $$typeof: elementSymbol,
+      type: 'div',
+      key: null,
+      ref: null,
+      props: {
+        children: [
+          {
+            $$typeof: elementSymbol,
+            type: 'ComponentClassWithSuppliedChildren',
+            key: null,
+            ref: null,
+            props: {
+              children: ['I am a child!'],
             },
             _owner: null,
             _store: {},
