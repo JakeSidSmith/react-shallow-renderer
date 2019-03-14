@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { elementSymbol } from './constants';
-import { isHTML } from './guards';
+import { isFunction, isHTML } from './guards';
 import {
   ReactAnyChild,
+  ReactAnyChildren,
   ReactAnyNode,
   ReactResolvedChild,
-  ReactResolvedNode,
+  ReactResolvedChildren,
 } from './types';
 
 export class ReactShallowRenderer {
@@ -15,7 +16,7 @@ export class ReactShallowRenderer {
     this.element = element as ReactAnyNode;
   }
 
-  public toJSON(): ReactResolvedNode {
+  public toJSON(): ReactResolvedChildren {
     const node = this.element;
 
     if (isHTML(node)) {
@@ -28,6 +29,16 @@ export class ReactShallowRenderer {
       };
     }
 
+    if (isFunction(node)) {
+      const children = this.resolveChildren(node);
+
+      if (children.length === 1) {
+        return children[0];
+      }
+
+      return children;
+    }
+
     return {
       $$typeof: elementSymbol,
       type: 'div',
@@ -37,7 +48,7 @@ export class ReactShallowRenderer {
         children: [],
       },
       _owner: null,
-      _store: {}
+      _store: {},
     };
   }
 
@@ -46,10 +57,21 @@ export class ReactShallowRenderer {
   ): ReadonlyArray<ReactResolvedChild> {
     if (isHTML(node)) {
       return typeof node.props.children !== 'undefined'
-        ? ([] as ReadonlyArray<ReactAnyChild>).concat(node.props.children).map(child => {
-            return this.resolveChild(child);
-          })
+        ? ([] as ReadonlyArray<ReactAnyChild>)
+            .concat(node.props.children)
+            .map(child => {
+              return this.resolveChild(child);
+            })
         : [];
+    }
+
+    if (isFunction(node)) {
+      const children = node.type(node.props);
+      return ([] as ReadonlyArray<ReactAnyChild>)
+        .concat(children as ReactAnyChildren)
+        .map(child => {
+          return this.resolveChild(child);
+        });
     }
 
     return [];
@@ -64,7 +86,7 @@ export class ReactShallowRenderer {
       return {
         ...node,
         $$typeof: elementSymbol,
-        type: this.resolveName(node),
+        type: this.resolveChildName(node),
         props: {
           ...node.props,
           children: this.resolveChildren(node),
@@ -75,9 +97,13 @@ export class ReactShallowRenderer {
     return node;
   }
 
-  private resolveName(node: ReactAnyNode): string {
+  private resolveChildName(node: ReactAnyNode): string {
     if (isHTML(node)) {
       return node.type;
+    }
+
+    if (isFunction(node)) {
+      return node.type.displayName || node.type.name || 'Unknown';
     }
 
     return node ? 'MyComponent' : 'NotMyComponent';

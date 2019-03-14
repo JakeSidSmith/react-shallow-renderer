@@ -1,9 +1,14 @@
 import * as React from 'react';
-import { ReactResolvedNode, ReactShallowRenderer } from '../src';
+import { ReactResolvedChildren, ReactShallowRenderer } from '../src';
 import { elementSymbol } from '../src/constants';
 
-function compare(output: ReactResolvedNode, expected: ReactResolvedNode) {
-  expect(JSON.stringify(output, undefined, 2)).toBe(JSON.stringify(expected, undefined, 2));
+function compare(
+  output: ReactResolvedChildren,
+  expected: ReactResolvedChildren
+) {
+  expect(JSON.stringify(output, undefined, 2)).toBe(
+    JSON.stringify(expected, undefined, 2)
+  );
 }
 
 describe('ReactShallowRenderer', () => {
@@ -45,7 +50,7 @@ describe('ReactShallowRenderer', () => {
         ],
       },
       _owner: null,
-      _store: {}
+      _store: {},
     });
   });
 
@@ -58,7 +63,7 @@ describe('ReactShallowRenderer', () => {
 
     const renderer = new ReactShallowRenderer(element);
 
-    expect(renderer.toJSON()).toEqual({
+    compare(renderer.toJSON(), {
       $$typeof: elementSymbol,
       type: 'div',
       key: null,
@@ -71,20 +76,18 @@ describe('ReactShallowRenderer', () => {
             key: null,
             ref: null,
             props: {
-              children: [
-                {
-                  $$typeof: elementSymbol,
-                  type: 'p',
-                  key: null,
-                  ref: null,
-                  props: {
-                    children: ['I have children!'],
-                  },
-                  _owner: null,
-                  _store: {},
-                },
-                'I am a child!',
-              ],
+              children: ['I have children!'],
+            },
+            _owner: null,
+            _store: {},
+          },
+          {
+            $$typeof: elementSymbol,
+            type: 'p',
+            key: null,
+            ref: null,
+            props: {
+              children: ['I am a child!'],
             },
             _owner: null,
             _store: {},

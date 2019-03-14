@@ -25,8 +25,12 @@ export interface ConsumerType {
 export type ReactPrimitiveChild = string | number | null | boolean;
 
 export type ReactAnyChild = ReactAnyNode | ReactPrimitiveChild;
+export type ReactAnyChildren = ReadonlyArray<ReactAnyChild> | ReactAnyChild;
 
 export type ReactResolvedChild = ReactResolvedNode | ReactPrimitiveChild;
+export type ReactResolvedChildren =
+  | ReadonlyArray<ReactResolvedChild>
+  | ReactResolvedChild;
 
 export interface ReactAnyNode {
   $$typeof: symbol;
@@ -43,7 +47,7 @@ export interface ReactAnyNode {
   ref: React.Ref<unknown>;
   props: {
     [i: string]: unknown;
-    children?: ReadonlyArray<ReactAnyChild> | ReactAnyChild;
+    children?: ReactAnyChildren;
   };
   _owner: unknown;
   _store: unknown;
