@@ -36,6 +36,8 @@ export class ReactShallowRenderer {
       props: {
         children: [],
       },
+      _owner: null,
+      _store: {}
     };
   }
 
