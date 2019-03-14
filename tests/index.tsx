@@ -10,10 +10,43 @@ describe('ReactShallowRenderer', () => {
     </div>
   );
 
+  it('renders some simple HTML', () => {
+    const element = (
+      <div>
+        <p>I am a child!</p>I am text!
+      </div>
+    );
+
+    const renderer = new ReactShallowRenderer(element);
+
+    expect(renderer.toJSON()).toEqual({
+      $$typeof: elementSymbol,
+      type: 'div',
+      key: null,
+      ref: null,
+      props: {
+        children: [
+          {
+            $$typeof: elementSymbol,
+            type: 'p',
+            key: null,
+            ref: null,
+            props: {
+              children: ['I am a child!'],
+            },
+            _owner: null,
+            _store: {},
+          },
+          'I am text!',
+        ],
+      },
+    });
+  });
+
   it('renders a basic function component with own and supplied children', () => {
     const element = (
       <ComponentWithChildren>
-        <p>I'm a child!</p>
+        <p>I am a child!</p>
       </ComponentWithChildren>
     );
 
@@ -44,7 +77,7 @@ describe('ReactShallowRenderer', () => {
                   _owner: null,
                   _store: {},
                 },
-                "I'm a child!",
+                'I am a child!',
               ],
             },
             _owner: null,
