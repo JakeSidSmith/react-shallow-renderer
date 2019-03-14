@@ -86,6 +86,13 @@ describe('ReactShallowRenderer', () => {
     }
   }
 
+  // tslint:disable-next-line:max-classes-per-file
+  class ComponentClassReturnsArray extends React.Component {
+    public render() {
+      return [<p key={1}>First</p>, 'Second'];
+    }
+  }
+
   const ComponentWithClassChildren: React.FunctionComponent = () => (
     <div>
       <ComponentClass />
@@ -291,6 +298,27 @@ describe('ReactShallowRenderer', () => {
 
   it('renders a component that returns an array', () => {
     const element = <ComponentReturnsArray />;
+
+    const renderer = new ReactShallowRenderer(element);
+
+    compare(renderer.toJSON(), [
+      {
+        $$typeof: elementSymbol,
+        type: 'p',
+        key: '1',
+        ref: null,
+        props: {
+          children: ['First'],
+        },
+        _owner: null,
+        _store: {},
+      },
+      'Second',
+    ]);
+  });
+
+  it('renders a component class that returns an array', () => {
+    const element = <ComponentClassReturnsArray />;
 
     const renderer = new ReactShallowRenderer(element);
 
