@@ -22,6 +22,12 @@ export interface ConsumerType {
   $$typeof: typeof contextSymbol;
 }
 
+export type ReactPrimitiveChild = string | number | null | boolean;
+
+export type ReactAnyChild = ReactAnyNode | ReactPrimitiveChild;
+
+export type ReactResolvedChild = ReactResolvedNode | ReactPrimitiveChild;
+
 export interface ReactAnyNode {
   $$typeof: symbol;
   type:
@@ -34,17 +40,27 @@ export interface ReactAnyNode {
     | ProviderType
     | ConsumerType;
   key: null | string;
-  ref: null | string | React.Ref<unknown>;
+  ref: React.Ref<unknown>;
   props: {
     [i: string]: unknown;
-    children?: ReadonlyArray<ReactAnyNode | string | number | null | boolean>;
+    children?: ReadonlyArray<ReactAnyChild> | ReactAnyChild;
   };
 }
 
 export interface ReactHTMLNode extends ReactAnyNode {
   $$typeof: typeof elementSymbol;
   type: string;
-  ref: React.Ref<HTMLElement | string>;
+  ref: React.Ref<unknown>;
+}
+
+export interface ReactResolvedNode extends ReactAnyNode {
+  $$typeof: typeof elementSymbol;
+  type: string;
+  ref: React.Ref<unknown>;
+  props: {
+    [i: string]: unknown;
+    children: ReadonlyArray<ReactResolvedChild>;
+  };
 }
 
 export interface ReactFragmentNode extends ReactAnyNode {
@@ -56,13 +72,13 @@ export interface ReactFragmentNode extends ReactAnyNode {
 export interface ReactClassNode extends ReactAnyNode {
   $$typeof: typeof elementSymbol;
   type: React.Component;
-  ref: React.Ref<React.Component>;
+  ref: React.Ref<unknown>;
 }
 
 export interface ReactFunctionNode extends ReactAnyNode {
   $$typeof: typeof elementSymbol;
   type: React.FunctionComponent;
-  ref: React.Ref<React.FunctionComponent>;
+  ref: React.Ref<unknown>;
 }
 
 export interface ReactMemoNode extends ReactAnyNode {
