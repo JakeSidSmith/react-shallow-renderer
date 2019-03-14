@@ -10,7 +10,7 @@ import {
 
 export interface MemoType {
   $$typeof: typeof memoSymbol;
-  type: React.FunctionComponent | React.Component;
+  type: React.FunctionComponent | React.ComponentClass;
   compare: null;
 }
 
@@ -39,7 +39,7 @@ export interface ReactAnyNode {
     | string
     | symbol
     | React.FunctionComponent
-    | React.Component
+    | React.ComponentClass
     | MemoType
     | ProviderType
     | ConsumerType;
@@ -79,7 +79,7 @@ export interface ReactFragmentNode extends ReactAnyNode {
 
 export interface ReactClassNode extends ReactAnyNode {
   $$typeof: typeof elementSymbol;
-  type: React.Component;
+  type: React.ComponentClass;
   ref: React.Ref<unknown>;
 }
 
