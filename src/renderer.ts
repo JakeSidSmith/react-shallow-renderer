@@ -31,8 +31,28 @@ export class ReactShallowRenderer {
       };
     }
 
-    if (isFunction(node) || isClass(node)) {
-      const children = this.resolveChildren(node);
+    if (isFunction(node)) {
+      const rendered = node.type(node.props) as ReactAnyChildren;
+      const children = ([] as ReadonlyArray<ReactAnyChild>)
+        .concat(rendered)
+        .map(child => {
+          return this.resolveChild(child);
+        });
+
+      if (children.length === 1) {
+        return children[0];
+      }
+
+      return children;
+    }
+
+    if (isClass(node)) {
+      const rendered = new node.type(node.props).render() as ReactAnyChildren;
+      const children = ([] as ReadonlyArray<ReactAnyChild>)
+        .concat(rendered)
+        .map(child => {
+          return this.resolveChild(child);
+        });
 
       if (children.length === 1) {
         return children[0];
@@ -58,28 +78,16 @@ export class ReactShallowRenderer {
       return typeof node.props.children !== 'undefined'
         ? ([] as ReadonlyArray<ReactAnyChild>)
             .concat(node.props.children)
-            .map(child => {
-              return this.resolveChild(child);
-            })
+            .map(child => this.resolveChild(child))
         : [];
     }
 
-    if (isFunction(node)) {
-      const children = node.type(node.props) as ReactAnyChildren;
-      return ([] as ReadonlyArray<ReactAnyChild>)
-        .concat(children)
-        .map(child => {
-          return this.resolveChild(child);
-        });
-    }
-
-    if (isClass(node)) {
-      const children = new node.type(node.props).render() as ReactAnyChildren;
-      return ([] as ReadonlyArray<ReactAnyChild>)
-        .concat(children)
-        .map(child => {
-          return this.resolveChild(child);
-        });
+    if (isFunction(node) || isClass(node)) {
+      return typeof node.props.children !== 'undefined'
+        ? ([] as ReadonlyArray<ReactAnyChild>)
+            .concat(node.props.children)
+            .map(child => this.resolveChild(child))
+        : [];
     }
 
     if (isMemo(node)) {
