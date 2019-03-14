@@ -41,7 +41,7 @@ export class ReactShallowRenderer {
 
     return {
       $$typeof: elementSymbol,
-      type: 'div',
+      type: 'SomethingWentWrongWithTheNode',
       ref: null,
       key: null,
       props: {
@@ -106,6 +106,6 @@ export class ReactShallowRenderer {
       return node.type.displayName || node.type.name || 'Unknown';
     }
 
-    return node ? 'MyComponent' : 'NotMyComponent';
+    return 'SomethingWentWrongWithTheName';
   }
 }
