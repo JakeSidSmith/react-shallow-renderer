@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { elementSymbol } from './constants';
-import { isFunction, isHTML, isMemo } from './guards';
+import { isClass, isFunction, isHTML, isMemo } from './guards';
 import {
   ReactAnyChild,
   ReactAnyChildren,
@@ -31,7 +31,7 @@ export class ReactShallowRenderer {
       };
     }
 
-    if (isFunction(node)) {
+    if (isFunction(node) || isClass(node)) {
       const children = this.resolveChildren(node);
 
       if (children.length === 1) {
@@ -65,9 +65,18 @@ export class ReactShallowRenderer {
     }
 
     if (isFunction(node)) {
-      const children = node.type(node.props);
+      const children = node.type(node.props) as ReactAnyChildren;
       return ([] as ReadonlyArray<ReactAnyChild>)
-        .concat(children as ReactAnyChildren)
+        .concat(children)
+        .map(child => {
+          return this.resolveChild(child);
+        });
+    }
+
+    if (isClass(node)) {
+      const children = new node.type(node.props).render() as ReactAnyChildren;
+      return ([] as ReadonlyArray<ReactAnyChild>)
+        .concat(children)
         .map(child => {
           return this.resolveChild(child);
         });
@@ -108,7 +117,7 @@ export class ReactShallowRenderer {
       return node.type;
     }
 
-    if (isFunction(node)) {
+    if (isFunction(node) || isClass(node)) {
       return node.type.displayName || node.type.name || 'Unknown';
     }
 
