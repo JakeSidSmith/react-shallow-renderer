@@ -19,7 +19,7 @@ describe('ReactShallowRenderer', () => {
 
     const renderer = new ReactShallowRenderer(element);
 
-    expect(renderer.toJSON()).toEqual({
+    expect(JSON.stringify(renderer.toJSON(), undefined, 2)).toEqual(JSON.stringify({
       $$typeof: elementSymbol,
       type: 'div',
       key: null,
@@ -40,7 +40,9 @@ describe('ReactShallowRenderer', () => {
           'I am text!',
         ],
       },
-    });
+      _owner: null,
+      _store: {}
+    }, undefined, 2));
   });
 
   it('renders a basic function component with own and supplied children', () => {
