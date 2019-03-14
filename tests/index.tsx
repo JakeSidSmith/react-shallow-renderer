@@ -12,11 +12,24 @@ function compare(
 }
 
 describe('ReactShallowRenderer', () => {
+  const MemoComponentWithChildren: React.FunctionComponent = React.memo(
+    ({ children }) => <p>{children}</p>
+  );
+
   const ComponentWithChildren: React.FunctionComponent = ({ children }) => (
     <div>
       <p>I have children!</p>
       {children}
     </div>
+  );
+
+  const MemoComponentWithMemoChildren: React.FunctionComponent = React.memo(
+    ({ children }) => (
+      <div>
+        <MemoComponentWithChildren>I have children!</MemoComponentWithChildren>
+        {children}
+      </div>
+    )
   );
 
   it('renders some simple HTML', () => {
@@ -59,6 +72,51 @@ describe('ReactShallowRenderer', () => {
       <ComponentWithChildren>
         <p>I am a child!</p>
       </ComponentWithChildren>
+    );
+
+    const renderer = new ReactShallowRenderer(element);
+
+    compare(renderer.toJSON(), {
+      $$typeof: elementSymbol,
+      type: 'div',
+      key: null,
+      ref: null,
+      props: {
+        children: [
+          {
+            $$typeof: elementSymbol,
+            type: 'p',
+            key: null,
+            ref: null,
+            props: {
+              children: ['I have children!'],
+            },
+            _owner: null,
+            _store: {},
+          },
+          {
+            $$typeof: elementSymbol,
+            type: 'p',
+            key: null,
+            ref: null,
+            props: {
+              children: ['I am a child!'],
+            },
+            _owner: null,
+            _store: {},
+          },
+        ],
+      },
+      _owner: null,
+      _store: {},
+    });
+  });
+
+  it('renders a memo function component with memo children', () => {
+    const element = (
+      <MemoComponentWithMemoChildren>
+        <p>I am a child!</p>
+      </MemoComponentWithMemoChildren>
     );
 
     const renderer = new ReactShallowRenderer(element);
