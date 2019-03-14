@@ -12,11 +12,17 @@ function compare(
 }
 
 describe('ReactShallowRenderer', () => {
-  const MemoComponentWithChildren: React.FunctionComponent = React.memo(
-    ({ children }) => <p>{children}</p>
+  const ComponentWithChildren: React.FunctionComponent = ({ children }) => (
+    <p>{children}</p>
   );
 
-  const ComponentWithChildren: React.FunctionComponent = ({ children }) => (
+  const MemoComponentWithChildren: React.FunctionComponent = React.memo(
+    ComponentWithChildren
+  );
+
+  const ComponentWithChildrenAndOwnChildren: React.FunctionComponent = ({
+    children,
+  }) => (
     <div>
       <p>I have children!</p>
       {children}
@@ -69,9 +75,9 @@ describe('ReactShallowRenderer', () => {
 
   it('renders a basic function component with own and supplied children', () => {
     const element = (
-      <ComponentWithChildren>
+      <ComponentWithChildrenAndOwnChildren>
         <p>I am a child!</p>
-      </ComponentWithChildren>
+      </ComponentWithChildrenAndOwnChildren>
     );
 
     const renderer = new ReactShallowRenderer(element);
@@ -130,7 +136,7 @@ describe('ReactShallowRenderer', () => {
         children: [
           {
             $$typeof: elementSymbol,
-            type: 'React.memo(Unknown)',
+            type: 'React.memo(ComponentWithChildren)',
             key: null,
             ref: null,
             props: {
