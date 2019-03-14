@@ -43,13 +43,8 @@ export class ReactShallowRenderer {
 
     if (isMemo(node)) {
       return this.internalToJSON({
-        ...node.type,
-        $$typeof: elementSymbol,
-        key: null,
-        ref: null,
-        props: node.props,
-        _owner: null,
-        _store: {},
+        ...node,
+        type: node.type.type,
       });
     }
 
@@ -88,6 +83,13 @@ export class ReactShallowRenderer {
         });
     }
 
+    if (isMemo(node)) {
+      return this.resolveChildren({
+        ...node,
+        type: this.resolveChildName(node),
+      });
+    }
+
     return [];
   }
 
@@ -118,6 +120,13 @@ export class ReactShallowRenderer {
 
     if (isFunction(node)) {
       return node.type.displayName || node.type.name || 'Unknown';
+    }
+
+    if (isMemo(node)) {
+      return `React.memo(${this.resolveChildName({
+        ...node,
+        type: node.type.type,
+      })})`;
     }
 
     return 'SomethingWentWrongWithTheName';
