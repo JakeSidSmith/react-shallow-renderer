@@ -130,7 +130,7 @@ describe('ReactShallowRenderer', () => {
         children: [
           {
             $$typeof: elementSymbol,
-            type: 'p',
+            type: 'React.memo(Unknown)',
             key: null,
             ref: null,
             props: {
