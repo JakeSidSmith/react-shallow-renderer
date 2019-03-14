@@ -9,7 +9,7 @@ import {
 } from './constants';
 
 export interface MemoType {
-  $$type: typeof memoSymbol;
+  $$typeof: typeof memoSymbol;
   type: React.FunctionComponent | React.Component;
   compare: null;
 }

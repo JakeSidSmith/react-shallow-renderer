@@ -30,21 +30,26 @@ export function isHTML(node: ReactAnyNode): node is ReactHTMLNode {
 export function isClass(node: ReactAnyNode): node is ReactClassNode {
   return (
     node.$$typeof === elementSymbol &&
-    (typeof node.type === 'function' &&
-      MATCHES_CLASS.test(Object.toString.call(node.type)))
+    typeof node.type === 'function' &&
+    MATCHES_CLASS.test(Object.toString.call(node.type))
   );
 }
 
 export function isFunction(node: ReactAnyNode): node is ReactFunctionNode {
   return (
     node.$$typeof === elementSymbol &&
-    (typeof node.type === 'function' &&
-      !MATCHES_CLASS.test(Object.toString.call(node.type)))
+    typeof node.type === 'function' &&
+    !MATCHES_CLASS.test(Object.toString.call(node.type))
   );
 }
 
 export function isMemo(node: ReactAnyNode): node is ReactMemoNode {
-  return node.$$typeof === memoSymbol;
+  return (
+    node.$$typeof === elementSymbol &&
+    typeof node.type === 'object' &&
+    '$$typeof' in node.type &&
+    node.type.$$typeof === memoSymbol
+  );
 }
 
 export function isPortal(node: ReactAnyNode): node is ReactPortalNode {
