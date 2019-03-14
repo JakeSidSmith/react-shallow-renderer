@@ -12,6 +12,16 @@ function compare(
 }
 
 describe('ReactShallowRenderer', () => {
+  const UnknownMemoComponent: React.FunctionComponent = React.memo(() => (
+    <p>Unknown name</p>
+  ));
+
+  const ComponentWithUnknownMemoChild: React.FunctionComponent = () => (
+    <div>
+      <UnknownMemoComponent />
+    </div>
+  );
+
   const ComponentWithChildren: React.FunctionComponent = ({ children }) => (
     <p>{children}</p>
   );
@@ -152,6 +162,36 @@ describe('ReactShallowRenderer', () => {
             ref: null,
             props: {
               children: ['I am a child!'],
+            },
+            _owner: null,
+            _store: {},
+          },
+        ],
+      },
+      _owner: null,
+      _store: {},
+    });
+  });
+
+  it('renders a memo function component with an unknown name', () => {
+    const element = <ComponentWithUnknownMemoChild />;
+
+    const renderer = new ReactShallowRenderer(element);
+
+    compare(renderer.toJSON(), {
+      $$typeof: elementSymbol,
+      type: 'div',
+      key: null,
+      ref: null,
+      props: {
+        children: [
+          {
+            $$typeof: elementSymbol,
+            type: 'React.memo(Unknown)',
+            key: null,
+            ref: null,
+            props: {
+              children: [],
             },
             _owner: null,
             _store: {},
