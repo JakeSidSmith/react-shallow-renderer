@@ -542,7 +542,7 @@ describe('ReactShallowRenderer', () => {
 
       compare(renderer.toJSON(), {
         $$typeof: elementSymbol,
-        type: 'React.memo(React.Fragment)',
+        type: 'React.Fragment',
         key: null,
         ref: null,
         props: {
