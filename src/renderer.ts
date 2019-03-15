@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { elementSymbol } from './constants';
-import { isClass, isFunction, isHTML, isMemo } from './guards';
+import { isClass, isFragment, isFunction, isHTML, isMemo } from './guards';
 import {
   ReactAnyChild,
   ReactAnyChildren,
@@ -68,6 +68,13 @@ export class ReactShallowRenderer {
       });
     }
 
+    if (isFragment(node)) {
+      return this.internalToJSON({
+        ...node,
+        type: this.resolveChildName(node),
+      });
+    }
+
     throw new Error('Invalid React element / child');
   }
 
@@ -90,7 +97,7 @@ export class ReactShallowRenderer {
         : [];
     }
 
-    if (isMemo(node)) {
+    if (isMemo(node) || isFragment(node)) {
       return this.resolveChildren({
         ...node,
         type: this.resolveChildName(node),
@@ -134,6 +141,10 @@ export class ReactShallowRenderer {
         ...node,
         type: node.type.type,
       })})`;
+    }
+
+    if (isFragment(node)) {
+      return 'React.Fragment';
     }
 
     throw new Error('Invalid React element / child');
