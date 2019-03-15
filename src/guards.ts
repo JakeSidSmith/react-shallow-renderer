@@ -1,22 +1,22 @@
 import {
-  contextSymbol,
+  // contextSymbol,
   elementSymbol,
   fragmentSymbol,
   MATCHES_CLASS,
   memoSymbol,
-  portalSymbol,
-  providerSymbol,
+  // portalSymbol,
+  // providerSymbol,
 } from './constants';
 import {
   ReactAnyNode,
   ReactClassNode,
-  ReactConsumerNode,
+  // ReactConsumerNode,
   ReactFragmentNode,
   ReactFunctionNode,
   ReactHTMLNode,
   ReactMemoNode,
-  ReactPortalNode,
-  ReactProviderNode,
+  // ReactPortalNode,
+  // ReactProviderNode,
 } from './types';
 
 export function isFragment(node: ReactAnyNode): node is ReactFragmentNode {
@@ -52,14 +52,14 @@ export function isMemo(node: ReactAnyNode): node is ReactMemoNode {
   );
 }
 
-export function isPortal(node: ReactAnyNode): node is ReactPortalNode {
-  return node.$$typeof === portalSymbol;
-}
+// export function isPortal(node: ReactAnyNode): node is ReactPortalNode {
+//   return node.$$typeof === portalSymbol;
+// }
 
-export function isProvider(node: ReactAnyNode): node is ReactProviderNode {
-  return node.$$typeof === providerSymbol;
-}
+// export function isProvider(node: ReactAnyNode): node is ReactProviderNode {
+//   return node.$$typeof === providerSymbol;
+// }
 
-export function isConsumer(node: ReactAnyNode): node is ReactConsumerNode {
-  return node.$$typeof === contextSymbol;
-}
+// export function isConsumer(node: ReactAnyNode): node is ReactConsumerNode {
+//   return node.$$typeof === contextSymbol;
+// }
