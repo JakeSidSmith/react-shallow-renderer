@@ -616,6 +616,40 @@ describe('ReactShallowRenderer', () => {
         _store: {},
       });
     });
+
+    it('renders an inline fragment', () => {
+      const element = (
+        <>
+          <p>I am a child!</p>
+        </>
+      );
+
+      const renderer = new ReactShallowRenderer(element);
+
+      compare(renderer.toJSON(), {
+        $$typeof: elementSymbol,
+        type: 'React.Fragment',
+        key: null,
+        ref: null,
+        props: {
+          children: [
+            {
+              $$typeof: elementSymbol,
+              type: 'p',
+              key: null,
+              ref: null,
+              props: {
+                children: ['I am a child!'],
+              },
+              _owner: null,
+              _store: {},
+            },
+          ],
+        },
+        _owner: null,
+        _store: {},
+      });
+    });
   });
 
   describe('internalToJSON', () => {
