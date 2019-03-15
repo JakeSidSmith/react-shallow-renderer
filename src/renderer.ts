@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { elementSymbol } from './constants';
+import { elementSymbol, INVALID_ELEMENT_ERROR_MESSAGE } from './constants';
 import { isClass, isFragment, isFunction, isHTML, isMemo } from './guards';
 import {
   ReactAnyChild,
@@ -75,7 +75,7 @@ export class ReactShallowRenderer {
       });
     }
 
-    throw new Error('Invalid React element / child');
+    throw new Error(INVALID_ELEMENT_ERROR_MESSAGE);
   }
 
   private resolveChildren(
@@ -104,7 +104,7 @@ export class ReactShallowRenderer {
       });
     }
 
-    throw new Error('Invalid React element / child');
+    throw new Error(INVALID_ELEMENT_ERROR_MESSAGE);
   }
 
   private resolveChild(node: ReactAnyChild): ReactResolvedChild {
@@ -147,6 +147,6 @@ export class ReactShallowRenderer {
       return 'React.Fragment';
     }
 
-    throw new Error('Invalid React element / child');
+    throw new Error(INVALID_ELEMENT_ERROR_MESSAGE);
   }
 }

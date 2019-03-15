@@ -6,3 +6,5 @@ export const providerSymbol = Symbol.for('react.provider');
 export const contextSymbol = Symbol.for('react.context');
 
 export const MATCHES_CLASS = /^class\s/;
+export const INVALID_ELEMENT_ERROR_MESSAGE =
+  'Invalid React element / child (not currently supported: portals, context providers / consumers)';
