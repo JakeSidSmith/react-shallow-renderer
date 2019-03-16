@@ -25,7 +25,7 @@ export interface ConsumerType {
 
 export interface ForwardRefType {
   $$typeof: typeof forwardRefSymbol;
-  render: React.FunctionComponent | React.ComponentClass;
+  render: React.FunctionComponent;
   displayName?: string;
 }
 
