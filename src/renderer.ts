@@ -212,9 +212,25 @@ export class ReactShallowRenderer {
     return fn.displayName || fn.name || 'Unknown';
   }
 
-  private constructInvalidNodeMessage(node: ReactAnyNode): string {
-    return `Invalid or unsupported React element / child: ${Object.prototype.toString.call(
+  private constructInvalidNodeMessage(node: unknown): string {
+    return `Invalid or unsupported React element / child: ${this.invalidNodeToString(
       node
     )}`;
+  }
+
+  private invalidNodeToString(node: unknown): string {
+    if (typeof node === 'string') {
+      return `"${node}"`;
+    }
+
+    if (
+      typeof node === 'number' ||
+      typeof node === 'undefined' ||
+      node === null
+    ) {
+      return `${node}`;
+    }
+
+    return Object.prototype.toString.call(node);
   }
 }
