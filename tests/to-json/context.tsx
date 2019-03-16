@@ -30,6 +30,9 @@ describe('ReactShallowRenderer', () => {
         key: null,
         ref: null,
         props: {
+          value: {
+            foo: 'provided value',
+          },
           children: [
             {
               $$typeof: elementSymbol,
