@@ -39,15 +39,24 @@ describe('ReactShallowRenderer', () => {
     it('returns a string representation of the invalid node', () => {
       const renderer = new ReactShallowRenderer(<div />);
 
+      const selfReferencing: Record<string, any> = {};
+
+      selfReferencing.reference = selfReferencing;
+
       // tslint:disable:no-string-literal
       expect(renderer['invalidNodeToString']('string')).toBe('"string"');
       expect(renderer['invalidNodeToString'](null)).toBe('null');
       expect(renderer['invalidNodeToString'](undefined)).toBe('undefined');
       expect(renderer['invalidNodeToString'](123)).toBe('123');
-      expect(renderer['invalidNodeToString']([])).toBe('[object Array]');
-      expect(renderer['invalidNodeToString']({})).toBe('[object Object]');
+      expect(renderer['invalidNodeToString'](['foo'])).toBe('[\n  "foo"\n]');
+      expect(renderer['invalidNodeToString']({ foo: 'bar' })).toBe(
+        '{\n  "foo": "bar"\n}'
+      );
       expect(renderer['invalidNodeToString'](new Error('error'))).toBe(
-        '[object Error]'
+        'Error: "error"'
+      );
+      expect(renderer['invalidNodeToString'](selfReferencing)).toBe(
+        '[object Object]\nCould not stringify: TypeError: Converting circular structure to JSON'
       );
       // tslint:enable:no-string-literal
     });

@@ -231,6 +231,20 @@ export class ReactShallowRenderer {
       return `${node}`;
     }
 
-    return Object.prototype.toString.call(node);
+    if (node instanceof Error) {
+      return `${node.name}: "${node.message}"`;
+    }
+
+    let stringified;
+
+    try {
+      stringified = JSON.stringify(node, undefined, 2);
+    } catch (error) {
+      return `${Object.prototype.toString.call(
+        node
+      )}\nCould not stringify: ${error}`;
+    }
+
+    return stringified;
   }
 }
