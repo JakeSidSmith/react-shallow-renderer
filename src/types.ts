@@ -22,7 +22,13 @@ export interface ConsumerType {
   $$typeof: typeof contextSymbol;
 }
 
-export type ReactPrimitiveChild = string | number | null | boolean;
+export type ReactPrimitiveChild =
+  | string
+  | number
+  | null
+  | boolean
+  | React.FunctionComponent
+  | React.ComponentClass;
 
 export type ReactAnyChild = ReactAnyNode | ReactPrimitiveChild;
 export type ReactAnyChildren = ReadonlyArray<ReactAnyChild> | ReactAnyChild;
