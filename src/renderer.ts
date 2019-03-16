@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { elementSymbol, INVALID_ELEMENT_ERROR_MESSAGE } from './constants';
+import { elementSymbol } from './constants';
 import {
   isClass,
   isConsumer,
@@ -88,7 +88,7 @@ export class ReactShallowRenderer {
       return this.resolveChild(node);
     }
 
-    throw new Error(INVALID_ELEMENT_ERROR_MESSAGE);
+    throw new Error(this.constructInvalidNodeMessage(node));
   }
 
   private resolveChildren(
@@ -130,7 +130,7 @@ export class ReactShallowRenderer {
         : [];
     }
 
-    throw new Error(INVALID_ELEMENT_ERROR_MESSAGE);
+    throw new Error(this.constructInvalidNodeMessage(node));
   }
 
   private resolveChild(node: ReactAnyChild): ReactResolvedChild {
@@ -203,12 +203,18 @@ export class ReactShallowRenderer {
       return 'ReactDOM.Portal';
     }
 
-    throw new Error(INVALID_ELEMENT_ERROR_MESSAGE);
+    throw new Error(this.constructInvalidNodeMessage(node));
   }
 
   private resolveFunctionName(
     fn: React.FunctionComponent | React.ComponentClass
   ) {
     return fn.displayName || fn.name || 'Unknown';
+  }
+
+  private constructInvalidNodeMessage(node: ReactAnyNode): string {
+    return `Invalid or unsupported React element / child: ${Object.prototype.toString.call(
+      node
+    )}`;
   }
 }
