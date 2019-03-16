@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { ReactShallowRenderer } from '../src';
-import { elementSymbol } from '../src/constants';
-import { compare } from './helpers/compare';
+import { ReactShallowRenderer } from '../../src';
+import { elementSymbol } from '../../src/constants';
+import { compare } from '../helpers/compare';
 
 describe('ReactShallowRenderer', () => {
   const ComponentWithFragment: React.FunctionComponent = () => (
