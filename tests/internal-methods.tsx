@@ -34,4 +34,22 @@ describe('ReactShallowRenderer', () => {
       ).toThrow(/invalid/i);
     });
   });
+
+  describe('invalidNodeToString', () => {
+    it('returns a string representation of the invalid node', () => {
+      const renderer = new ReactShallowRenderer(<div />);
+
+      // tslint:disable:no-string-literal
+      expect(renderer['invalidNodeToString']('string')).toBe('"string"');
+      expect(renderer['invalidNodeToString'](null)).toBe('null');
+      expect(renderer['invalidNodeToString'](undefined)).toBe('undefined');
+      expect(renderer['invalidNodeToString'](123)).toBe('123');
+      expect(renderer['invalidNodeToString']([])).toBe('[object Array]');
+      expect(renderer['invalidNodeToString']({})).toBe('[object Object]');
+      expect(renderer['invalidNodeToString'](new Error('error'))).toBe(
+        '[object Error]'
+      );
+      // tslint:enable:no-string-literal
+    });
+  });
 });
