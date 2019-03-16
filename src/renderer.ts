@@ -7,6 +7,7 @@ import {
   isFunction,
   isHTML,
   isMemo,
+  isPortal,
   isProvider,
 } from './guards';
 import {
@@ -83,6 +84,10 @@ export class ReactShallowRenderer {
       });
     }
 
+    if (isPortal(node)) {
+      return this.resolveChild(node);
+    }
+
     throw new Error(INVALID_ELEMENT_ERROR_MESSAGE);
   }
 
@@ -117,6 +122,14 @@ export class ReactShallowRenderer {
       });
     }
 
+    if (isPortal(node)) {
+      return typeof node.children !== 'undefined'
+        ? ([] as ReadonlyArray<ReactAnyChild>)
+            .concat(node.children)
+            .map(child => this.resolveChild(child))
+        : [];
+    }
+
     throw new Error(INVALID_ELEMENT_ERROR_MESSAGE);
   }
 
@@ -126,6 +139,20 @@ export class ReactShallowRenderer {
     }
 
     if (typeof node === 'object') {
+      if (isPortal(node)) {
+        return {
+          $$typeof: elementSymbol,
+          type: this.resolveChildName(node),
+          key: null,
+          ref: null,
+          props: {
+            children: this.resolveChildren(node),
+          },
+          _owner: null,
+          _store: {},
+        };
+      }
+
       return {
         ...node,
         $$typeof: elementSymbol,
@@ -170,6 +197,10 @@ export class ReactShallowRenderer {
 
     if (isConsumer(node)) {
       return 'React.Consumer';
+    }
+
+    if (isPortal(node)) {
+      return 'ReactDOM.Portal';
     }
 
     throw new Error(INVALID_ELEMENT_ERROR_MESSAGE);
