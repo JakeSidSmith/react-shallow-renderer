@@ -66,5 +66,10 @@ export function isProvider(node: ReactAnyNode): node is ReactProviderNode {
 }
 
 export function isConsumer(node: ReactAnyNode): node is ReactConsumerNode {
-  return node.$$typeof === contextSymbol;
+  return (
+    node.$$typeof === elementSymbol &&
+    typeof node.type === 'object' &&
+    '$$typeof' in node.type &&
+    node.type.$$typeof === contextSymbol
+  );
 }
