@@ -103,6 +103,9 @@ export interface ReactMemoNode extends ReactAnyNode {
 export interface ReactPortalNode extends ReactAnyNode {
   $$typeof: typeof portalSymbol;
   type: undefined;
+  children?: ReactAnyChildren;
+  containerInfo: {};
+  implementation: null;
 }
 
 export interface ReactProviderNode extends ReactAnyNode {
