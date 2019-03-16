@@ -2,6 +2,10 @@
 
 **A shallow renderer for React components**
 
+[![CircleCI](https://circleci.com/gh/JakeSidSmith/react-shallow-renderer.svg?style=svg)](https://circleci.com/gh/JakeSidSmith/react-shallow-renderer)
+
+## About
+
 This is an alternative renderer to `react-test-renderer/shallow` with full support for:
 
 * React.memo
