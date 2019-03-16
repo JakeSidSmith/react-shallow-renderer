@@ -43,3 +43,113 @@ Newer versions of jest will automatically call the `toJSON` method of the render
 ```jsx
 expect(renderer.toJSON()).toMatchSnapshot();
 ```
+
+## Example output in jest snapshots
+
+### A form component using `memo`, `Fragment`, a `SubmitButton` component that uses `memo`, and an external form library that uses `forwardRef`
+
+```jsx
+import React from 'react';
+import { Field } from 'form-library';
+import SubmitButton from './path';
+
+const MyComponent = (props) => (
+  <>
+    <h1>
+      Log in
+    </h1>
+    <form onSubmit={props.handleSubmit}>
+      <Field component="input" type="email" name="email"  />
+      <Field component="input" type="password" name="password"  />
+      <SubmitButton>
+        Log in
+      </SubmitButton>
+    </form>
+    <a href="/forgot-password">
+      Forgot password?
+    </a>
+  </>
+);
+
+export default React.memo(MyComponent);
+```
+
+### The output
+
+```html
+<React.Fragment>
+  <h1>
+    Log in
+  </h1>
+  <form
+    onSubmit={[Function]}
+  >
+    <React.forwardRef(Field)
+      component="input"
+      type="email"
+      name="email"
+    />
+    <React.forwardRef(Field)
+      component="input"
+      type="password"
+      name="password"
+    />
+    <React.memo(SubmitButton)>
+      Log in
+    </React.memo(SubmitButton)>
+  </form>
+  <a
+    href="/forgot-password"
+  >
+    Forgot password?
+  </a>
+</React.Fragment>
+```
+
+### A component using ReactDOM.createPortal, and a context consumer
+
+```jsx
+import React, { PureComponent } from 'react';
+import ReactDOM from 'react-dom';
+import Popover from './path';
+import { MyContext } from './another-path';
+
+export default class MyComponent extends PureComponent {
+  render() {
+    return ReactDOM.createPortal(
+      (
+        <Popover>
+          <MyContext.Consumer>
+            {(value) => (
+              <p>
+                Some content: {value}
+              </p>
+            )}
+          </MyContext.Consumer>
+        </Popover>
+      ),
+      document.getElementById('my-id')
+    );
+  }
+}
+```
+
+### The output
+
+```html
+<ReactDOM.Portal>
+  <Popover>
+    <React.Consumer>
+      [Function: Unknown]
+    </React.Consumer>
+  </Popover>
+</ReactDOM.Portal>
+```
+
+You can avoid the `Unknown` function here by defining a named function, or `const` outside of the render method, which should give you a nicer output, such as:
+
+```html
+<React.Consumer>
+  [Function: myFunction]
+</React.Consumer>
+```
