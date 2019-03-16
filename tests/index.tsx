@@ -4,13 +4,6 @@ import { elementSymbol } from '../src/constants';
 import { compare } from './helpers/compare';
 
 describe('ReactShallowRenderer', () => {
-  const ComponentWithFalsyChildren: React.FunctionComponent = () => (
-    <div>
-      <p>{null}</p>
-      <p>{false}</p>
-    </div>
-  );
-
   const ComponentWithFragment: React.FunctionComponent = () => (
     <>
       <p>First</p>
@@ -93,47 +86,6 @@ describe('ReactShallowRenderer', () => {
         },
         'Second',
       ]);
-    });
-
-    it('renders a component with a falsy children', () => {
-      const element = <ComponentWithFalsyChildren />;
-
-      const renderer = new ReactShallowRenderer(element);
-
-      compare(renderer.toJSON(), {
-        $$typeof: elementSymbol,
-        type: 'div',
-        key: null,
-        ref: null,
-        props: {
-          children: [
-            {
-              $$typeof: elementSymbol,
-              type: 'p',
-              key: null,
-              ref: null,
-              props: {
-                children: [null],
-              },
-              _owner: null,
-              _store: {},
-            },
-            {
-              $$typeof: elementSymbol,
-              type: 'p',
-              key: null,
-              ref: null,
-              props: {
-                children: [false],
-              },
-              _owner: null,
-              _store: {},
-            },
-          ],
-        },
-        _owner: null,
-        _store: {},
-      });
     });
 
     it('renders a component class', () => {
