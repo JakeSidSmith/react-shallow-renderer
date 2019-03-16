@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
   contextSymbol,
   elementSymbol,
+  forwardRefSymbol,
   fragmentSymbol,
   memoSymbol,
   portalSymbol,
@@ -20,6 +21,12 @@ export interface ProviderType {
 
 export interface ConsumerType {
   $$typeof: typeof contextSymbol;
+}
+
+export interface ForwardRefType {
+  $$typeof: typeof forwardRefSymbol;
+  render: React.FunctionComponent | React.ComponentClass;
+  displayName?: string;
 }
 
 export type ReactPrimitiveChild =
@@ -50,7 +57,8 @@ export interface ReactElementNode {
     | React.ComponentClass
     | MemoType
     | ProviderType
-    | ConsumerType;
+    | ConsumerType
+    | ForwardRefType;
   key: null | string;
   ref: React.Ref<unknown>;
   props: {
@@ -97,15 +105,15 @@ export interface ReactMemoNode extends ReactElementNode {
 }
 
 export interface ReactProviderNode extends ReactElementNode {
-  type: {
-    $$typeof: typeof providerSymbol;
-  };
+  type: ProviderType;
 }
 
 export interface ReactConsumerNode extends ReactElementNode {
-  type: {
-    $$typeof: typeof contextSymbol;
-  };
+  type: ConsumerType;
+}
+
+export interface ReactForwardRefNode extends ReactElementNode {
+  type: ForwardRefType;
 }
 
 export interface ReactDOMPortalNode {

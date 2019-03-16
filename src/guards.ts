@@ -1,6 +1,7 @@
 import {
   contextSymbol,
   elementSymbol,
+  forwardRefSymbol,
   fragmentSymbol,
   MATCHES_CLASS,
   memoSymbol,
@@ -12,6 +13,7 @@ import {
   ReactClassNode,
   ReactConsumerNode,
   ReactDOMPortalNode,
+  ReactForwardRefNode,
   ReactFragmentNode,
   ReactFunctionNode,
   ReactHTMLNode,
@@ -67,6 +69,15 @@ export function isConsumer(node: ReactAnyNode): node is ReactConsumerNode {
     typeof node.type === 'object' &&
     '$$typeof' in node.type &&
     node.type.$$typeof === contextSymbol
+  );
+}
+
+export function isForwardRef(node: ReactAnyNode): node is ReactForwardRefNode {
+  return (
+    node.$$typeof === elementSymbol &&
+    typeof node.type === 'object' &&
+    '$$typeof' in node.type &&
+    node.type.$$typeof === forwardRefSymbol
   );
 }
 
