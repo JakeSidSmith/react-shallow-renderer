@@ -4,7 +4,7 @@ import {
   fragmentSymbol,
   MATCHES_CLASS,
   memoSymbol,
-  // portalSymbol,
+  portalSymbol,
   providerSymbol,
 } from './constants';
 import {
@@ -15,7 +15,7 @@ import {
   ReactFunctionNode,
   ReactHTMLNode,
   ReactMemoNode,
-  // ReactPortalNode,
+  ReactPortalNode,
   ReactProviderNode,
 } from './types';
 
@@ -52,10 +52,6 @@ export function isMemo(node: ReactAnyNode): node is ReactMemoNode {
   );
 }
 
-// export function isPortal(node: ReactAnyNode): node is ReactPortalNode {
-//   return node.$$typeof === portalSymbol;
-// }
-
 export function isProvider(node: ReactAnyNode): node is ReactProviderNode {
   return (
     node.$$typeof === elementSymbol &&
@@ -72,4 +68,8 @@ export function isConsumer(node: ReactAnyNode): node is ReactConsumerNode {
     '$$typeof' in node.type &&
     node.type.$$typeof === contextSymbol
   );
+}
+
+export function isPortal(node: ReactAnyNode): node is ReactPortalNode {
+  return node.$$typeof === portalSymbol;
 }
