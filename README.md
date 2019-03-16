@@ -18,6 +18,12 @@ This is an alternative renderer to `react-test-renderer/shallow` with full suppo
 
 The output of this renderer is far more informative than other existing renderers, providing context of memo wrapped components, fragments, etc.
 
+If you're using jest you may enjoy [jest-matcher-react-shallow-snapshot](https://www.npmjs.com/package/@jakesidsmith/jest-matcher-react-shallow-snapshot), which wraps this library for ease of use:
+
+```jsx
+expect(<MyComponent />).toMatchReactShallowSnapshot()
+```
+
 ## Install
 
 ```shell
