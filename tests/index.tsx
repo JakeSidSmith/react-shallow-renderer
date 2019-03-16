@@ -1,15 +1,7 @@
 import * as React from 'react';
-import { ReactResolvedChildren, ReactShallowRenderer } from '../src';
+import { ReactShallowRenderer } from '../src';
 import { elementSymbol } from '../src/constants';
-
-function compare(
-  output: ReactResolvedChildren,
-  expected: ReactResolvedChildren
-) {
-  expect(JSON.stringify(output, undefined, 2)).toBe(
-    JSON.stringify(expected, undefined, 2)
-  );
-}
+import { compare } from './helpers/compare';
 
 describe('ReactShallowRenderer', () => {
   const ComponentReturnsArray = ((() => [
@@ -123,41 +115,6 @@ describe('ReactShallowRenderer', () => {
   );
 
   describe('toJSON', () => {
-    it('renders some simple HTML', () => {
-      const element = (
-        <div>
-          <p>I am a child!</p>I am text!
-        </div>
-      );
-
-      const renderer = new ReactShallowRenderer(element);
-
-      compare(renderer.toJSON(), {
-        $$typeof: elementSymbol,
-        type: 'div',
-        key: null,
-        ref: null,
-        props: {
-          children: [
-            {
-              $$typeof: elementSymbol,
-              type: 'p',
-              key: null,
-              ref: null,
-              props: {
-                children: ['I am a child!'],
-              },
-              _owner: null,
-              _store: {},
-            },
-            'I am text!',
-          ],
-        },
-        _owner: null,
-        _store: {},
-      });
-    });
-
     it('renders a basic function component with own and supplied children', () => {
       const element = (
         <ComponentWithChildrenAndOwnChildren>
