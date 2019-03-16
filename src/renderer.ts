@@ -3,6 +3,7 @@ import { elementSymbol } from './constants';
 import {
   isClass,
   isConsumer,
+  isForwardRef,
   isFragment,
   isFunction,
   isHTML,
@@ -84,6 +85,24 @@ export class ReactShallowRenderer {
       });
     }
 
+    if (isForwardRef(node)) {
+      const rendered = node.type.render(
+        node.props,
+        node.ref
+      ) as ReactAnyChildren;
+      const children = ([] as ReadonlyArray<ReactAnyChild>)
+        .concat(rendered)
+        .map(child => {
+          return this.resolveChild(child);
+        });
+
+      if (children.length === 1) {
+        return children[0];
+      }
+
+      return children;
+    }
+
     if (isPortal(node)) {
       return this.resolveChild(node);
     }
@@ -114,7 +133,8 @@ export class ReactShallowRenderer {
       isMemo(node) ||
       isFragment(node) ||
       isProvider(node) ||
-      isConsumer(node)
+      isConsumer(node) ||
+      isForwardRef(node)
     ) {
       return this.resolveChildren({
         ...node,
@@ -184,6 +204,14 @@ export class ReactShallowRenderer {
       return `React.memo(${this.resolveChildName({
         ...node,
         type: node.type.type,
+      })})`;
+    }
+
+    if (isForwardRef(node)) {
+      return `React.forwardRef(${this.resolveChildName({
+        ...node,
+        type:
+          node.type.displayName || this.resolveFunctionName(node.type.render),
       })})`;
     }
 
