@@ -11,11 +11,11 @@ import {
   ReactAnyNode,
   ReactClassNode,
   ReactConsumerNode,
+  ReactDOMPortalNode,
   ReactFragmentNode,
   ReactFunctionNode,
   ReactHTMLNode,
   ReactMemoNode,
-  ReactPortalNode,
   ReactProviderNode,
 } from './types';
 
@@ -70,6 +70,6 @@ export function isConsumer(node: ReactAnyNode): node is ReactConsumerNode {
   );
 }
 
-export function isPortal(node: ReactAnyNode): node is ReactPortalNode {
+export function isPortal(node: ReactAnyNode): node is ReactDOMPortalNode {
   return node.$$typeof === portalSymbol;
 }

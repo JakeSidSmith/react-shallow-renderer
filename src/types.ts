@@ -38,8 +38,10 @@ export type ReactResolvedChildren =
   | ReadonlyArray<ReactResolvedChild>
   | ReactResolvedChild;
 
-export interface ReactAnyNode {
-  $$typeof: symbol;
+export type ReactAnyNode = ReactElementNode | ReactDOMPortalNode;
+
+export interface ReactElementNode {
+  $$typeof: typeof elementSymbol;
   type:
     | undefined
     | string
@@ -59,14 +61,12 @@ export interface ReactAnyNode {
   _store: unknown;
 }
 
-export interface ReactHTMLNode extends ReactAnyNode {
-  $$typeof: typeof elementSymbol;
+export interface ReactHTMLNode extends ReactElementNode {
   type: string;
   ref: React.Ref<unknown>;
 }
 
-export interface ReactResolvedNode extends ReactAnyNode {
-  $$typeof: typeof elementSymbol;
+export interface ReactResolvedNode extends ReactElementNode {
   type: string;
   ref: React.Ref<unknown>;
   props: {
@@ -77,47 +77,41 @@ export interface ReactResolvedNode extends ReactAnyNode {
   _store: unknown;
 }
 
-export interface ReactFragmentNode extends ReactAnyNode {
-  $$typeof: typeof elementSymbol;
+export interface ReactFragmentNode extends ReactElementNode {
   type: typeof fragmentSymbol;
   props: { children: ReadonlyArray<ReactAnyNode> };
 }
 
-export interface ReactClassNode extends ReactAnyNode {
-  $$typeof: typeof elementSymbol;
+export interface ReactClassNode extends ReactElementNode {
   type: React.ComponentClass;
   ref: React.Ref<unknown>;
 }
 
-export interface ReactFunctionNode extends ReactAnyNode {
-  $$typeof: typeof elementSymbol;
+export interface ReactFunctionNode extends ReactElementNode {
   type: React.FunctionComponent;
   ref: React.Ref<unknown>;
 }
 
-export interface ReactMemoNode extends ReactAnyNode {
-  $$typeof: typeof elementSymbol;
+export interface ReactMemoNode extends ReactElementNode {
   type: MemoType;
 }
 
-export interface ReactPortalNode extends ReactAnyNode {
-  $$typeof: typeof portalSymbol;
-  type: undefined;
-  children?: ReactAnyChildren;
-  containerInfo: {};
-  implementation: null;
-}
-
-export interface ReactProviderNode extends ReactAnyNode {
-  $$type: typeof elementSymbol;
+export interface ReactProviderNode extends ReactElementNode {
   type: {
     $$typeof: typeof providerSymbol;
   };
 }
 
-export interface ReactConsumerNode extends ReactAnyNode {
-  $$type: typeof elementSymbol;
+export interface ReactConsumerNode extends ReactElementNode {
   type: {
     $$typeof: typeof contextSymbol;
   };
+}
+
+export interface ReactDOMPortalNode {
+  $$typeof: typeof portalSymbol;
+  key: null | string;
+  children?: ReactAnyChildren;
+  containerInfo: {};
+  implementation: null;
 }
