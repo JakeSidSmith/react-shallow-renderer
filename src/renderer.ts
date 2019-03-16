@@ -1,6 +1,13 @@
 import * as React from 'react';
 import { elementSymbol, INVALID_ELEMENT_ERROR_MESSAGE } from './constants';
-import { isClass, isFragment, isFunction, isHTML, isMemo } from './guards';
+import {
+  isClass,
+  isFragment,
+  isFunction,
+  isHTML,
+  isMemo,
+  isProvider,
+} from './guards';
 import {
   ReactAnyChild,
   ReactAnyChildren,
@@ -68,7 +75,7 @@ export class ReactShallowRenderer {
       });
     }
 
-    if (isFragment(node)) {
+    if (isFragment(node) || isProvider(node)) {
       return this.internalToJSON({
         ...node,
         type: this.resolveChildName(node),
@@ -97,7 +104,7 @@ export class ReactShallowRenderer {
         : [];
     }
 
-    if (isMemo(node) || isFragment(node)) {
+    if (isMemo(node) || isFragment(node) || isProvider(node)) {
       return this.resolveChildren({
         ...node,
         type: this.resolveChildName(node),
@@ -145,6 +152,10 @@ export class ReactShallowRenderer {
 
     if (isFragment(node)) {
       return 'React.Fragment';
+    }
+
+    if (isProvider(node)) {
+      return 'React.Provider';
     }
 
     throw new Error(INVALID_ELEMENT_ERROR_MESSAGE);
