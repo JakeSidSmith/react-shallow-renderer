@@ -63,19 +63,7 @@ describe('ReactShallowRenderer', () => {
         key: null,
         ref: null,
         props: {
-          children: [
-            {
-              $$typeof: elementSymbol,
-              type: '?',
-              key: null,
-              ref: null,
-              props: {
-                children: [],
-              },
-              _owner: null,
-              _store: {},
-            },
-          ],
+          children: ['[Function: ContextRenderer]'],
         },
         _owner: null,
         _store: {},
