@@ -2,6 +2,7 @@ import * as React from 'react';
 import { elementSymbol, INVALID_ELEMENT_ERROR_MESSAGE } from './constants';
 import {
   isClass,
+  isConsumer,
   isFragment,
   isFunction,
   isHTML,
@@ -75,7 +76,7 @@ export class ReactShallowRenderer {
       });
     }
 
-    if (isFragment(node) || isProvider(node)) {
+    if (isFragment(node) || isProvider(node) || isConsumer(node)) {
       return this.internalToJSON({
         ...node,
         type: this.resolveChildName(node),
@@ -104,7 +105,12 @@ export class ReactShallowRenderer {
         : [];
     }
 
-    if (isMemo(node) || isFragment(node) || isProvider(node)) {
+    if (
+      isMemo(node) ||
+      isFragment(node) ||
+      isProvider(node) ||
+      isConsumer(node)
+    ) {
       return this.resolveChildren({
         ...node,
         type: this.resolveChildName(node),
@@ -131,6 +137,10 @@ export class ReactShallowRenderer {
       };
     }
 
+    if (typeof node === 'function') {
+      return `[Function: ${this.resolveFunctionName(node)}]`;
+    }
+
     return node;
   }
 
@@ -140,7 +150,7 @@ export class ReactShallowRenderer {
     }
 
     if (isFunction(node) || isClass(node)) {
-      return node.type.displayName || node.type.name || 'Unknown';
+      return this.resolveFunctionName(node.type);
     }
 
     if (isMemo(node)) {
@@ -158,6 +168,16 @@ export class ReactShallowRenderer {
       return 'React.Provider';
     }
 
+    if (isConsumer(node)) {
+      return 'React.Consumer';
+    }
+
     throw new Error(INVALID_ELEMENT_ERROR_MESSAGE);
+  }
+
+  private resolveFunctionName(
+    fn: React.FunctionComponent | React.ComponentClass
+  ) {
+    return fn.displayName || fn.name || 'Unknown';
   }
 }
