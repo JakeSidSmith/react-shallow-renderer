@@ -1,9 +1,5 @@
 import * as React from 'react';
-import {
-  ReactAnyNode,
-  ReactResolvedChildren,
-  ReactShallowRenderer,
-} from '../src';
+import { ReactResolvedChildren, ReactShallowRenderer } from '../src';
 import { elementSymbol } from '../src/constants';
 
 function compare(
@@ -649,39 +645,6 @@ describe('ReactShallowRenderer', () => {
         _owner: null,
         _store: {},
       });
-    });
-  });
-
-  describe('internalToJSON', () => {
-    it('throws an error if the node is invalid', () => {
-      const renderer = new ReactShallowRenderer(<div />);
-
-      expect(() =>
-        // tslint:disable-next-line:no-string-literal
-        renderer['internalToJSON'](({} as unknown) as ReactAnyNode)
-      ).toThrow(/invalid/i);
-    });
-  });
-
-  describe('resolveChildren', () => {
-    it('throws an error if the node is invalid', () => {
-      const renderer = new ReactShallowRenderer(<div />);
-
-      expect(() =>
-        // tslint:disable-next-line:no-string-literal
-        renderer['resolveChildren'](({} as unknown) as ReactAnyNode)
-      ).toThrow(/invalid/i);
-    });
-  });
-
-  describe('resolveChildName', () => {
-    it('throws an error if the node is invalid', () => {
-      const renderer = new ReactShallowRenderer(<div />);
-
-      expect(() =>
-        // tslint:disable-next-line:no-string-literal
-        renderer['resolveChildName'](({} as unknown) as ReactAnyNode)
-      ).toThrow(/invalid/i);
     });
   });
 });
