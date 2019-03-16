@@ -153,3 +153,21 @@ You can avoid the `Unknown` function here by defining a named function, or `cons
   [Function: myFunction]
 </React.Consumer>
 ```
+
+## Tips
+
+In order to get better snapshots (and avoid unknown component names in dev tools), you should not define anonymous / arrow functions in your render method, or immediately inside wrappers like React.memo and React.forwardRef. Instead I recommend the following:
+
+```jsx
+const MyComponent = () => <div />;
+
+export default React.memo(MyComponent);
+```
+
+Or with react-redux:
+
+```jsx
+const MyComponent = () => <div />;
+
+export default connect(mapStateToProps)(React.memo(MyComponent));
+```
