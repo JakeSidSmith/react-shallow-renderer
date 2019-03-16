@@ -4,12 +4,14 @@
   "description": "A shallow renderer for React components",
   "main": "dist/index.js",
   "scripts": {
+    "dist": "./scripts/dist",
     "prettier-check": "prettier --check '**/*.{ts,tsx,js,jsx}'",
     "prettier": "prettier --write '**/*.{ts,tsx,js,jsx}'",
     "lint": "npm run prettier-check && tslint --project tsconfig.json '{src,tests}/**/*.{ts,tsx}'",
     "typecheck": "tsc --project tsconfig.json --noEmit",
     "tests": "jest",
-    "test": "npm run lint && npm run typecheck && npm run tests -- --runInBand --coverage"
+    "test": "npm run lint && npm run typecheck && npm run tests -- --runInBand --coverage",
+    "prepublishOnly": "npm run dist"
   },
   "repository": {
     "type": "git",
@@ -29,7 +31,10 @@
   },
   "homepage": "https://github.com/jakesidsmith/react-shallow-renderer#readme",
   "dependencies": {
-    "react": ">=16"
+    "@types/react": ">=16",
+    "@types/react-dom": ">=16",
+    "react": ">=16",
+    "react-dom": ">=16"
   },
   "devDependencies": {
     "@types/jest": "^24.0.11",
@@ -43,6 +48,7 @@
     "typescript": "^3.3.3333"
   },
   "peerDependencies": {
-    "react": ">=16"
+    "react": ">=16",
+    "react-dom": ">=16"
   }
 }

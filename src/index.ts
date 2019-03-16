@@ -1,1 +1,2 @@
-export const message = 'Hello, World!';
+export { ReactShallowRenderer } from './renderer';
+export * from './types';
